@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue.js | BasakKurtLab</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        input{
+            outline:none;
+            border:1ps solid gray;
+            padding:8px 10px;
+        }
+        button{
+            padding:8px 10px;
+            border:none;
+            background-color: rgb(32, 133, 133);
+            color:beige;
+            margin:10px;
+            border-radius: 6px;
+        }
+        .boxes{
+            display: flex;
+            justify-content: center;
+            width:600px;
+        }
+        .box{
+            width:100px;
+            height: 100px;
+            margin:10px;
+            border:1px solid black;
+        }
+        .red{
+            background-color: red;
+        }
+        .blue{
+            background-color: blue;
+        }
+        .green{
+            background-color: green;
+        }
+        .small{
+            width:50px;
+            height: 50px;
+            margin:10px;
+        }
+        .big{
+            width:200px;
+            height: 200px;
+            margin:10px;
+        }
+        .progresBar{
+            width:2px;
+            height: 30px;
+            background-color: blue;
+            border-color: darkgoldenrod;
+            margin-bottom: 10px;
+        }
+        .room{
+            width:500px;
+            height:500px;
+            background-color: black;
+            border:1px solid black;
+            transition: all 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dark{
+            background-color: black;
+            background-image: url("licht1.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            
+        }
+        .light{
+            background-color: white;
+            background-image: url("licht2.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div id="app">
+        <h3>Enter a number then use the buttons</h3>
+        <input type="text" v-model="number"><br>
+        
+        <button @click="plus" >increase</button>
+        <button @click="minus">decrease</button>
+
+        <hr>
+        color selection:red-blue-green<br>
+        <input type="text" v-model="classAdd"><br>
+        size selection:small-big<br>
+        <input type="text" v-model="size">
+        <div class="boxes">
+            <div class="box" :class="[classAdd, size]"></div>
+            <div class="box" :class="[classAdd, size]"></div>
+            <div class="box" :class="[classAdd, size]"></div>
+            <div class="box" :class="[classAdd, size]"></div>
+            <div class="box" :class="[classAdd, size]"></div>
+        </div>
+
+        <hr>
+        
+        Set a Timer for progressbar<br>
+        <input type="text" v-model="timer">
+        <div class="progresBar" :style="{width : progressWidth + 'px'}"></div>
+        
+        <button @click="progresStart">Enter to Start</button>
+        <hr>
+        
+        Turn on the lights!<br>
+        
+        <div class="room" :class="updateEffectClass"></div>
+        
+        <button @click="startEffect">Turn on Turn off the lights!</button>
+        <button @click="autoStart">Auto!</button>
+       
+        
+    
+
+    <script>
+        
+        new Vue({
+            el : "#app",
+            data : {
+                number:0,
+                step:0,
+                classAdd : "",
+                size : "",
+                timer:0,
+                progressWidth : 2,
+                turnon:false,
+                
+                link:"licht1.png",
+                link2:"licht2.png"
+                
+
+            },
+            computed : {
+  	            updateEffectClass : function(){
+		            return { 
+			        light: this.turnon, 
+			        dark : !this.turnon
+			        }
+	        }
+            
+            
+		        
+	
+            },
+            methods: {
+                plus:function(){
+                   return this.number ++;
+                },
+                minus:function(){
+                   return this.number --;
+                },
+                progresStart : function(){
+		            var vm = this;
+		            setInterval(function(){
+			        vm.progressWidth+=10;	
+		            }, this.timer);
+	            },
+                startEffect: function() {
+			        this.turnon = !this.turnon;	
+		            
+                },
+               
+                autoStart: function() {
+		            var vm = this;
+		            setInterval(function(){
+			        vm.turnon = !vm.turnon;	
+		        }, 1000);
+
+                
+                },
+                imgChange(){
+                if(this.turnon){
+                    this.link = "licht1.png" ;   
+                } else {
+                    this.link = "licht2.png"; 
+                }
+                return this.link
+                
+            }
+            }
+
+
+    
+        });
+
+    </script>
+</body>
+</html>
